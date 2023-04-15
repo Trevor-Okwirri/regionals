@@ -41,10 +41,10 @@ const sendMail = async (to, subject, message) =>{
 
 //REGISTER
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password , profilePic} = req.body;
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: 'username, email, and password are required' });
+  if (!username || !email || !password || !profilePic) {
+    return res.status(400).json({ message: 'username, email, profilePic, and password are required' });
   }
 
   if (password.trim() === '') {
@@ -56,6 +56,7 @@ router.post("/register", async (req, res) => {
     password: CryptoJS.SHA512(
       req.body.password,
     ).toString(),
+    profilePic: req.body.profilePic
   });
   try {
     const savedUser = await newUser.save();
