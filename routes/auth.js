@@ -23,7 +23,7 @@ const sendMail = async (to, subject, message) =>{
 });
 
     const mailOptions = {
-        from : "anonymousjusticeke@outlook.com", 
+        from : "anon.justice@outlook.com", 
         to, 
         subject, 
         text: message,
@@ -67,7 +67,7 @@ router.post("/register", async (req, res) => {
         expiresIn: "3h",
       }
     );
-    sendMail(savedUser.email, "Welcome Message",`Your email verification link is http://127.0.0.1:3000/auth/verify/${verificationToken}`)
+    sendMail(savedUser.email, "Welcome Message",`Your email verification link is https://regionals.vercel.app/auth/verify/${verificationToken}`)
     const user = {...savedUser._doc, message: "Verification email sent"}
     res.status(201).json(user);
   } catch (err) {
