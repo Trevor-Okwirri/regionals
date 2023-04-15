@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 const {
   verifyToken,
 } = require("./verifyToken");
-
+const User = require('../models/User');
 
 const CrimeReport = require('../models/Report');
 const Comment = require('../models/Comment');
