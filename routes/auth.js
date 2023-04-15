@@ -8,33 +8,32 @@ const dotenv = require("dotenv")
 dotenv.config();
 
 const sendMail = async (to, subject, message) =>{
+  // send verification email
   const transporter = nodemailer.createTransport({
-    host: 'hotmail',
-  port: 465,
-  secure: true,
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
     auth: {
         user: 'anon.justice@outlook.com',
-        pass: 'justice2023'
+        pass: 'anonymous2023'
     },
-    tls: {
-      rejectUnauthorized: false
-    },
-    connectionTimeout: 60000 
 });
 
-    const mailOptions = {
-        from : "anon.justice@outlook.com", 
-        to, 
-        subject, 
-        text: message,
-    }
+  const mailOptions = {
+    from: 'anon.justice@outlook.com',
+    to: to,
+    subject: subject,
+    text: message
+  };
 
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-          console.log(error);
-      } else {
-          console.log('Email sent: ' + info.response);
-      }
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error sending verification email');
+    } else {
+      console.log('Verification email sent: ' + info.response);
+      res.send('Verification email sent');
+    }
   });
 }
 // sendMail("trevorokwirri@gmail.com", `Welcome Message","Welcome to Anonymous Justice` )
