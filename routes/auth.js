@@ -26,7 +26,7 @@ const sendMail = async (to, subject, message) =>{
     text: message
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
       res.status(500).send('Error sending verification email');
@@ -58,6 +58,7 @@ router.post("/register", async (req, res) => {
     profilePic: req.body.profilePic
   });
   try {
+    console.log('Hi')
     const savedUser = await newUser.save();
     const verificationToken = jwt.sign(
       { newUser},
@@ -66,7 +67,8 @@ router.post("/register", async (req, res) => {
         expiresIn: "3h",
       }
     );
-    sendMail(savedUser.email, "Welcome Message",`Your email verification link is https://regionals.vercel.app/auth/verify/${verificationToken}`)
+    sendMail(req.body.email, "Welcome Message",`Your email verification link is https://regionals.vercel.app/auth/verify/${verificationToken}`)
+    console.log('Hi')
     const user = {...savedUser._doc, message: "Verification email sent"}
     res.status(201).json(user);
   } catch (err) {
@@ -122,7 +124,7 @@ router.post("/verification", async (req, res) => {
     if(user.isVerified){
       return res.send("User already verified")
     }
-    sendMail(user.email, "Welcome Message",`Your email verification link is http://127.0.0.1:3000/auth/verify/${verificationToken}
+    sendMail(user.email, "Welcome Message",`Your email verification link is https://regionals.vercel.app/auth/verify/${verificationToken}
     It expires in 3 hours`)      
     res.send("Verification email sent successfully");
   } catch (err) {
