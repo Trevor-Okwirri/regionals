@@ -26,7 +26,7 @@ dotenv.config();
 const mongoLink = "mongodb+srv://trevorokwirri:trevor%401234@anonymous-justice.eppsouf.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose
-  .connect(mongoLink)
+  .connect('mongodb://127.0.0.1:27017/anonymous-justice')
   .then(() => console.log("DB Connection Successfull!"))
   .catch((err) => {
     console.log(err);

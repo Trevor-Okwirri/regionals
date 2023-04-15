@@ -8,26 +8,34 @@ const dotenv = require("dotenv")
 dotenv.config();
 
 const sendMail = async (to, subject, message) =>{
-    const transporter = nodemailer.createTransport({
-        service : "hotmail",
-        auth : {
-            user : "anonymousjusticeke@outlook.com",
-            pass : "justice2023"
-        }
-    })
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+    auth: {
+        user: 'anonymousjusticeke@gmail.com',
+        pass: 'justice2023'
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 60000 
+});
 
-    const options = {
+    const mailOptions = {
         from : "anonymousjusticeke@outlook.com", 
         to, 
         subject, 
         text: message,
     }
 
-    transporter.sendMail(options, (error, info) =>{
-        if(error) console.log(error)
-        else console.log(info)
-    })
-
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Email sent: ' + info.response);
+      }
+  });
 }
 // sendMail("trevorokwirri@gmail.com", `Welcome Message","Welcome to Anonymous Justice` )
 
@@ -59,7 +67,8 @@ router.post("/register", async (req, res) => {
       }
     );
     sendMail(savedUser.email, "Welcome Message",`Your email verification link is http://127.0.0.1:3000/auth/verify/${verificationToken}`)
-    res.status(201).json(savedUser);
+    const user = {...savedUser._doc, message: "Verification email sent"}
+    res.status(201).json(user);
   } catch (err) {
     console.log(err)
     res.status(500).json(err);
