@@ -9,11 +9,11 @@ dotenv.config();
 
 const sendMail = async (to, subject, message) =>{
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: 'hotmail',
   port: 465,
   secure: true,
     auth: {
-        user: 'anonymousjusticeke@gmail.com',
+        user: 'anon.justice@outlook.com',
         pass: 'justice2023'
     },
     tls: {
