@@ -59,17 +59,27 @@ router.post('/', verifyToken, [
 });
 
 // Get all crime reports
+// Get all crime reports
 router.get('/', verifyToken, async (req, res) => {
   try {
     // Find all crime reports and populate the author field with the user's name
     const crimeReports = await CrimeReport.find().populate('author', 'name');
+    const crimes = [];
 
-    return res.json(crimeReports);
+    for (const element of crimeReports) {
+      const author = await User.findById(element.author);
+      const newReport = { ...element._doc, user: author.username };
+      crimes.push(newReport);
+    }
+
+    console.log(crimes);
+    return res.json(crimes);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 // Get a single crime report
 router.get('/:id', verifyToken, async (req, res) => {
