@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema(
   {
     profilePic: {
       type: String,
-      required: true
+      required: false
     },
     username: { 
       type: String, 
